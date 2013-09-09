@@ -1,14 +1,10 @@
-function Form(id) {
-	this.id = id;
+function Form(rootVal) {
+  this.root = document.getElementById(rootVal);
 }
 Form.prototype.checkAllOrNone = function(check) {
-	for(var i=0, len=myform.childNodes.length; i < len; i++  ) {
-	    if (myform.childNodes[i].type == "checkbox")
-		    if(check == true)
-		    myform.childNodes[i].checked = true;
-		    else
-		    if(check == false)
-			myform.childNodes[i].checked = false;
-	}
+  var checkboxes = document.querySelectorAll("#" + this.root.id + " input[type='checkbox']");
+  for (var i = 0, len = checkboxes.length; i < len; i++  ) {
+    checkboxes[i].checked = check;
+  }      
 }
 var formObj = new Form("myform");
