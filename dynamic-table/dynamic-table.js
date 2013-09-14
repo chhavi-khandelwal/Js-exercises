@@ -20,8 +20,10 @@ Table.prototype.addRow = function() {
   button.type = "button";
   button.value = "save";
   button.className = "savefield";
-  cell3.appendChild(button);
   var counter = this.count;
+  button.id = "saveButton"[counter];
+  console.log(button.id);
+  cell3.appendChild(button);
   button.onclick = function() {
     name.disabled = true;
     name.style.background = "white";
@@ -33,10 +35,12 @@ Table.prototype.addRow = function() {
     email.style.border = "none";
     var myrow = document.getElementById(counter);
     var lastTableCell = myrow.lastChild;
-    var saveButton = lastTableCell.firstChild;
+    var saveButton = document.getElementById("saveButton"[counter]);
+    console.log(saveButton);
     var edit = document.createElement("a");
     edit.href = "#";
-    edit.innerHTML = "edit";
+    var emailTextNode = document.createTextNode("edit");
+    edit.appendChild(emailTextNode);
     edit.onclick = function() {
       name.disabled = false;
       name.style.border = "1px solid #ada9a5";
@@ -44,18 +48,19 @@ Table.prototype.addRow = function() {
       email.disabled = false;
       email.style.border = "1px solid #ada9a5";
       email.style.borderRadius = "3px";
-      lastTableCell.innerHTML = '';
+      var emptyText = document.createTextNode("");
+      lastTableCell.replaceChild(saveButton, edit);
+      lastTableCell.replaceChild(emptyText, del);            
       lastTableCell.appendChild(saveButton);
       return false;
     }
     var del = document.createElement("a");
     del.href = "#";
-    del.innerHTML = "/del";
+    var delTextNode = document.createTextNode("/del");
+    del.appendChild(delTextNode);
     del.onclick = function() {
       var tablebody = document.getElementsByTagName("tbody");
       tablebody[0].removeChild(myrow);
-      lastTableCell.innerHTML = '';
-      lastTableCell.appendChild(saveButton);
       return false;
     }
     lastTableCell.replaceChild(edit, saveButton);
