@@ -6,15 +6,13 @@ function promptName(name) {
     return new promptName(name);
   }
   else
-        return this.trueName; 
+    return this.trueName; 
   }
 promptName.prototype.alertName = function(secondName) {
-  console.log(firstName);
- console.log(secondName);
   var message = "hello " + this.trueName + " " + secondName.trueName;
-  var para = document.getElementById("mydiv");
+  var div = document.getElementById("mydiv");
   alert(message);
-  para.innerHTML = message;
+  div.innerHTML = message;
 }
 var firstName = new promptName("FirstName");
 var secondName = new promptName("SecondName");
