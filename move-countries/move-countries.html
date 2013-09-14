@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+  <html>
+    <head>
+      <title>
+        MOVE COUNTRIES
+      </title>
+      <link rel="stylesheet" type="text/css" href="move-countries.css">
+    </head>
+    <body>
+      <div id="main-container">
+        <select id="addlist" multiple>
+          <option value="Denmark">Denmark</option>
+          <option value="India">India</option>
+          <option value="Australia">Australia</option>
+          <option value="Pakistan">Pakistan</option>
+          <option value="USA">USA</option>
+          <option value="Sri Lanka">Sri Lanka</option>
+        </select>
+        <div id="buttonspace">
+          <input type="button" id="add" value="Add" onclick="buttonClick.addOrRemove(this)">
+          <input type="button" id="remove" value="Remove" onclick="buttonClick.addOrRemove(this)">
+        </div>
+        <select id="removelist" multiple>
+        </select>
+      </div>
+      <script type="text/javascript" src="move-countries.js"></script>
+    </body>
+  </html>

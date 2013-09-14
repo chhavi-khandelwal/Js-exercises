@@ -1,0 +1,22 @@
+#main-container {
+  width: 620px;
+  height: 250px;
+  border-color: #808080;
+  box-shadow: 1px 1px 1px 2px #808080;  
+}
+#addlist, #removelist {
+  display: inline-block;
+  width: 250px;
+  height: 200px;
+  margin-left: 10px;
+}
+#buttonspace {
+ display: inline-block;
+ position: relative;
+ bottom: 50px;
+}
+#add, #remove {
+  display: block;
+  background-color: #ff6000;
+  color: white;
+}
