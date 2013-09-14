@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+  <html>
+    <head>
+      <title>
+        FORM-VALIDATION
+      </title>
+      <link rel="stylesheet" type="text/css" href="form-validation.css"></style>
+    </head>
+    <body>
+      <div id="main-container">
+        <div id="inner-container">
+          <div id ="heading"> Registration Form</div>
+            <div id="divform">
+              <form id="myform" action="_blank" method="get">
+                <div class="formfields">
+                  <div class="labels"><label for="login">Login Id</label></div>
+                  <div class="formele"><input type="textbox" id="login" class="textboxdata"></div>
+                </div>
+                <div class="formfields">
+                  <div class="labels"><label for="Email">Email</label></div>
+                  <div class="formele"><input type="email"  id="email" class="textboxdata"></div>
+                </div>
+                <div class="formfields">
+                  <div class="labels"><label for="Name">Name</label></div>
+                  <div class="formele"><input type="textbox" id="name" class="textboxdata"></div>
+                </div>
+                <div class="formfields">
+                  <div class="labels"><label for="login">Timezone</label></div>
+                  <div class="formele">
+                    <select id="timezone">
+                      <option value="GMT">GMT</option>
+                      <option value="-12.0">GMT -12:00</option>
+                      <option value="-11.0">GMT -11:00</option>
+                      <option value="-10.0">GMT -10:00</option>
+                      <option value="-9.0">GMT -9:00</option>
+                      <option value="-8.0">GMT -8:00</option>
+                      <option value="-7.0">GMT -7:00</option>
+                      <option value="-6.0">GMT -6:00</option>
+                      <option value="-5.0">GMT -5:00</option>
+                      <option value="-4.0">GMT -4:00</option>
+                      <option value="-3.0">GMT -3:00</option>
+                      <option value="-2.0">GMT -2:00</option>
+                      <option value="-1.0">GMT -1:00</option>
+                      <option value="0.0">GMT 0:00</option>
+                      <option value="1.0">GMT 1:00</option>
+                      <option value="2.0">GMT 2:00</option>
+                      <option value="3.0">GMT 3:00</option>
+                      <option value="4.0">GMT 4:00</option>
+                      <option value="5.0">GMT 5:00</option>
+                      <option value="6.0">GMT 6:00</option>
+                      <option value="7.0">GMT 7:00</option>
+                      <option value="8.0">GMT 8:00</option>
+                      <option value="9.0">GMT 9:00</option>
+                      <option value="10.0">GMT 10:00</option>
+                      <option value="11.0">GMT 11:00</option>
+                      <option value="12.0">GMT 12:00</option>
+                    </select> 
+                  </div>
+                </div>
+                <div class="formfields">
+                  <div class="labels"><label for="Home Page">Home Page</label></div>
+                  <div class="formele"><input type="textbox" id="homepage" class="textboxdata"></div>
+                </div>
+                <div class="formfields">
+                  <div class="labels"><label for="About me">About me</label></div>
+                </div>
+                <div class="formfields">  
+                  <div class="labels"><textarea id="aboutme" rows="10" cols="50"></textarea></div>
+                </div>
+                <div class="formfields">
+                <div id="check"><input type="checkbox" id="checkbox">
+                  <label for="notification" id="notify">Receive notification of comments</label>
+                </div>
+                </div>
+                <div class="formfields">
+                  You will be sent an email when someone posts comments to your blog or Album.
+                </div>
+                <div id="instruction">Your password will be mailed to you.
+                </div>  
+                <div id="subbutton">
+                  <input type="submit" value="GO">
+                </div>
+
+              </form>  
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript" src="form-validation.js"></script>
+    </body>
+  </html>
