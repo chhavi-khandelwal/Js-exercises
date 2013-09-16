@@ -1,0 +1,75 @@
+#main-container {
+  width: 900px;
+  height: 700px;
+  box-shadow: 1px 1px 1px 2px #707070;
+  margin-left: 100px;
+} 
+#inner-container {
+  width: 700px;
+  height: 700px;
+  margin-left: 100px;
+}
+#heading {
+  display: block;
+  background-color: #62733d;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+#divform {
+  display: inline-block;
+  width: 700px;
+  height: 650px;
+  background-color: #e8f2d7;
+}
+.formele {
+  display: inline-block;
+  margin-left: 50px;
+}
+.labels {
+  width: 100px;
+  display: inline-block;
+  font-weight: bold;
+  font-family: tahoma;
+  font-size: 14px;
+}
+.formfields {
+  display: block;
+  margin-left: 10px;
+  padding-top: 20px;
+  font-family: tahoma;
+  font-size: 14px;
+}
+#notify {
+  font-family: tahoma;
+  font-size: 14px;
+  font-weight: bold;
+}
+p {
+  display: inline;
+}
+input[type="textbox"], input[type="email"], textarea, select {
+  border: solid 2px #3e8c5e;
+}
+input[type="email"], #name {
+  background-color: #ffffa0;
+}
+#instruction {
+  padding-top: 20px;
+  text-align: center;
+  font-family: tahoma;
+  font-size: 14px;
+}
+input[type="submit"] {
+  display: inline-block;
+  background-color: #62733d;
+  color: white;
+  font-weight: bold;
+  margin-left: 300px;
+}
+#subbutton {
+  padding-top: 30px;
+}
+#timezone {
+  background-color: white;
+}
