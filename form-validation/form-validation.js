@@ -6,7 +6,7 @@ Element.prototype.isFormValidate = function(validity) {
     if (this.element.id == "login" || this.element.id == "email" || this.element.id == "name" || this.element.id == "homepage") {
       var trimmedText = this.element.value.trim(); 
       var message = this.element.id + " can't be empty";
-      if (trimmedText == "") {
+      if (!trimmedText) {
         alert(message);
         return false;
       }
@@ -18,7 +18,7 @@ Element.prototype.isFormValidate = function(validity) {
     if (this.element.id == "aboutme") {
       var textData = this.element.value.length;
       var trimmedText = this.element.value.trim(); 
-      if (trimmedText == "" || trimmedText.length < 50) {
+      if (!trimmedText || trimmedText.length < 50) {
         alert("Minimum length of text in " + this.element.id + " should be 50");
         return false;
       }
@@ -54,8 +54,10 @@ function formValidate(event) {
       return false;
     }
   }
-  if (!area.isFormValidate("minlength"))
+  if (!area.isFormValidate("minlength")) {
     event.preventDefault(); 
+    return false;
+  }  
   if (!checkNotify.isFormValidate("ischecked"))
     event.preventDefault();
 }
