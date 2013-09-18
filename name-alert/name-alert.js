@@ -1,19 +1,19 @@
-function promptName(name) {
-  this.trueName = prompt("Enter your " + name, "");
+function userName(name) {
+  this.trueName = prompt("Enter your " + name);
   this.trimmedName = this.trueName.trim();
-  if (this.trueName === null || this.trimmedName === "" || this.trueName === " ") {
+  if (!this.trimmedName) {
     alert("Enter the correct name");
-    return new promptName(name);
+    return new userName(name);
   }
   else
     return this.trueName; 
   }
-promptName.prototype.alertName = function(secondName) {
+userName.prototype.alertName = function(secondName) {
   var message = "hello " + this.trueName + " " + secondName.trueName;
   var div = document.getElementById("mydiv");
   alert(message);
   div.innerHTML = message;
 }
-var firstName = new promptName("FirstName");
-var secondName = new promptName("SecondName");
+var firstName = new userName("FirstName");
+var secondName = new userName("SecondName");
 firstName.alertName(secondName);
