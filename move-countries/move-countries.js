@@ -1,16 +1,17 @@
 function Div(id) {
+  divObj = this;
   this.divId = document.getElementById(id);
+  this.button1 = document.getElementById("add");
+  this.button2 = document.getElementById("remove"); 
+  this.button1.addEventListener("click", this.ButtonClick);
+  this.button2.addEventListener("click", this.ButtonClick);
   this.addList = document.getElementById("addlist");
   this.removeList = document.getElementById("removelist");
 } 
-Div.prototype.addOrRemove = function(task) {
-  if (task.id == "add")
-    while (!(this.addList.selectedIndex == -1)) {
-    this.removeList.appendChild(this.addList.options[this.addList.selectedIndex]);
-  }
-  if (task.id == "remove")
-  while (!(this.removeList.selectedIndex == -1)) {
-    this.addList.appendChild(this.removeList.options[this.removeList.selectedIndex]);  
-  }
+Div.prototype.ButtonClick = function () {
+  if(this.id == "add")
+    divObj.removeList.appendChild(divObj.addList.options[divObj.addList.selectedIndex]);
+  else  
+    divObj.addList.appendChild(divObj.removeList.options[divObj.removeList.selectedIndex]);
 }
 var buttonClick = new Div("main-container");
