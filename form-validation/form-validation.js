@@ -1,7 +1,7 @@
-function Validation(id) {
+function Element(id) {
   this.element = document.getElementById(id);
 }
-Validation.prototype.isFormValidate = function(validity) {
+Element.prototype.isFormValidate = function(validity) {
   if (validity == "filled") {
     if (this.element.id == "login" || this.element.id == "email" || this.element.id == "name" || this.element.id == "homepage") {
       var trimmedText = this.element.value.trim(); 
@@ -43,10 +43,10 @@ Validation.prototype.isFormValidate = function(validity) {
 var textboxes = document.getElementsByClassName("textboxdata");
 var field = new Array();
 for (var i = 0, len = textboxes.length; i < len; i++) {
-  field[i] = new Validation(textboxes[i].id);
+  field[i] = new Element(textboxes[i].id);
 }
-var area = new Validation("aboutme");
-checkNotify = new Validation("checkbox");
+var area = new Element("aboutme");
+checkNotify = new Element("checkbox");
 function formValidate(event) {
   for (var i = 0, len = textboxes.length; i < len; i++) {
     if (!field[i].isFormValidate("filled")) {
