@@ -9,12 +9,8 @@ UserName.prototype.alertName = function() {
     alert("Enter the correct name");
     return this.alertName();
   }
-  else if (this.myName == "FirstName" && (trimmedName)) {
-    this.initials = trueName;
-  }
-  else {
-    this.initials = trueName;
-  }
+  else
+    this.initials = trimmedName;
 }  
 var firstName = new UserName("FirstName"); 
 firstName.alertName();
