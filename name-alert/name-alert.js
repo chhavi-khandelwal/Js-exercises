@@ -14,13 +14,13 @@ UserName.prototype.alertName = function() {
   }
   else {
     this.initials = trueName;
-    var message = "hello " + firstName.initials + " " + this.initials;
-    var div = document.getElementById("mydiv");
-    alert(message);
-    div.innerHTML = message;
   }
 }  
 var firstName = new UserName("FirstName"); 
 firstName.alertName();
 var secondName = new UserName("SecondName");
 secondName.alertName();
+var message = "hello " + firstName.initials + " " + secondName.initials;
+var div = document.getElementById("mydiv");
+alert(message);
+div.innerHTML = message;
