@@ -8,7 +8,7 @@ Url.prototype.openNewWindow = function() {
     alert("Enter a valid url");
     return urlValue.openNewWindow();
   }
-  if(this.validUrl) {
+  else {
     window.open(this.validUrl,'',"width = 400, height = 450, scrollbars = 0, resizable = 0, location = 0, status = 0, menubar = 0");
   }   
 }
