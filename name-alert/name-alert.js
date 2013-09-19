@@ -1,22 +1,26 @@
 function UserName(name) {
-  that = this;
   this.myName = name;
+  this.initials;
 }
-UserName.prototype.alertName= function() {
+UserName.prototype.alertName = function() {
   var trueName = prompt("Enter your " + this.myName);
   var trimmedName = trueName.trim();
   if (!trimmedName) {
     alert("Enter the correct name");
-    return that.alertName();
+    return this.alertName();
   }
-  else
-    return trueName; 
+  else if (this.myName == "FirstName" && (trimmedName)) {
+    this.initials = trueName;
+  }
+  else {
+    this.initials = trueName;
+    var message = "hello " + firstName.initials + " " + this.initials;
+    var div = document.getElementById("mydiv");
+    alert(message);
+    div.innerHTML = message;
+  }
 }  
-var firstName = new UserName("FirstName");
-var first = firstName.alertName();
+var firstName = new UserName("FirstName"); 
+firstName.alertName();
 var secondName = new UserName("SecondName");
-var second = secondName.alertName();
-var message = "hello " + first + " " + second;
-var div = document.getElementById("mydiv");
-alert(message);
-div.innerHTML = message;
+secondName.alertName();
