@@ -1,17 +1,17 @@
-function Div(id) {
-  divObj = this;
+function ListTransfer(id) {
+  ListTransferScope = this;
   this.divId = document.getElementById(id);
-  this.button1 = document.getElementById("add");
-  this.button2 = document.getElementById("remove"); 
-  this.button1.addEventListener("click", this.ButtonClick);
-  this.button2.addEventListener("click", this.ButtonClick);
+  this.addButton = document.getElementById("add");
+  this.removeButton = document.getElementById("remove"); 
+  this.addButton.addEventListener("click", this.moveSelections);
+  this.removeButton.addEventListener("click", this.moveSelections);
   this.addList = document.getElementById("addlist");
   this.removeList = document.getElementById("removelist");
 } 
-Div.prototype.ButtonClick = function () {
+ListTransfer.prototype.moveSelections = function () {
   if(this.id == "add")
-    divObj.removeList.appendChild(divObj.addList.options[divObj.addList.selectedIndex]);
+    ListTransferScope.removeList.appendChild(ListTransferScope.addList.options[ListTransferScope.addList.selectedIndex]);
   else  
-    divObj.addList.appendChild(divObj.removeList.options[divObj.removeList.selectedIndex]);
+    ListTransferScope.addList.appendChild(ListTransferScope.removeList.options[ListTransferScope.removeList.selectedIndex]);
 }
-var buttonClick = new Div("main-container");
+var countryTransferList = new ListTransfer("main-container");
