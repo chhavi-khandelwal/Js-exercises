@@ -1,24 +1,18 @@
-function GetElement(id) {
-  this.element = document.getElementById(id);
+function Form(id) {
+  that = this;
+  this.formId = document.getElementById(id);
+  this.numField = document.getElementById("number");
+  this.result = document.getElementById("result");
+  this.formId.addEventListener("submit", this.checkNumber);
 }
-GetElement.prototype.checkNumber = function() {
-  var result = document.getElementById("result");
+Form.prototype.checkNumber = function(event) {
   var numRegEx = /^[\-|\+]?[/d]*([\.[\d]+)?$/;
-  if (!numRegEx.test(this.element.value)) {
-    result.value = "false";
+  if (!numRegEx.test(that.numField.value)) {
+    that.result.value = "false";
     alert("Invalid number");
-    return false;
-  }
-  else {
-    result.value = "true";
-    return true;
-  }    
-}
-var numValue = new GetElement("number");
-function formValidation(event) {
-  if(!numValue.checkNumber()) {
     event.preventDefault();
   }
+  else
+    that.result.value = "true";  
 }
-var formId = document.getElementById("myform");
-formId.addEventListener("submit", formValidation, false);
+var numValue = new Form("myform");
