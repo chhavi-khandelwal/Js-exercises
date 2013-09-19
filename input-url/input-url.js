@@ -1,16 +1,16 @@
-function promptUrl() {
-  this.validUrl = prompt("Enter a URL", "");
-  this.trimmedUrl = this.validUrl.trim();
-  if (this.validUrl == null || this.validUrl == "" || this.trimmedUrl == "") {
-    alert("Enter a valid url");
-    return new promptUrl();
-  }
-  else return this.validUrl;
+function Url() {
+  this.validUrl;
 }
-promptUrl.prototype.openNewWindow = function() {
+Url.prototype.openNewWindow = function() {
+  this.validUrl = prompt("Enter a URL");
+  var trimmedUrl = this.validUrl.trim();
+  if (!trimmedUrl) {
+    alert("Enter a valid url");
+    return urlValue.openNewWindow();
+  }
   if(this.validUrl) {
-    window.open(this.validUrl,'','width = 400', 'height = 450');
+    window.open(this.validUrl,'',"width = 400, height = 450, scrollbars = 0, resizable = 0, location = 0, status = 0, menubar = 0");
   }   
 }
-var urlValue = new promptUrl();
+var urlValue = new Url();
 urlValue.openNewWindow();
