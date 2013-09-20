@@ -1,46 +1,48 @@
-function GetElement(id) {
-  this.element = document.getElementById(id);
+function Form(id) {
+  this.formId = document.getElementById(id);
+  this.formId.addEventListener("submit", this.alertUrl, false);
 }
-GetElement.prototype.alertUrl = function() {
-  var urlRegEx = /((([A-Za-z]{3,9}:(?:\/\/)?)?(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
-  var urlValue = this.element.value;
+Form.prototype.alertUrl = function(event) {
+  var urlRegEx = /^(?:(?:http|https|ftp):\/\/)?(?:www\.)?((([\w\d\-\_]+\.)+(\w{2}\.)(\w{2}))|(([\w\d\-\_]+\.)+(\w{2,4})))(?:\/[\w\d\-\_\?\=\&\#\.]+)*$/i;
+  var urlValue = document.getElementById("url").value;
   if (!urlRegEx.test(urlValue)) {
     alert("Enter a valid Url");
+    event.preventDefault();
   }
   else {
-    var regEx1 = /[A-Za-z]{3,9}:\/\//i;
-    var str = urlValue.split(regEx1);
-    var regEx3 = /(\/[\w\d]+)/;
-    var check;
-    var dom;
-    if (str[0].split(/\./)[0] == "www") 
-      var str = str[0].split(/www\./);
-    else if (str[1].split(/\./)[0] == "www")
-      var str = str[1].split(/www\./);
-    dom = str[1].split(regEx3);
-    if(dom[0].split(/\./).length > 2)
-      check = 1;
-    else
-      check = 0; 
-    var domain = dom[0].split(/\./);
-    if (dom.length > 0 && check == 0) {
-      alert("Domain: " + dom[0]);
-      return true;
-    }
-    else
-    if (check == 1) {
-      var subdom = new Array();
-      for (i = 0; i < domain.length-2; i++) {
-        subdom.push(domain[i]);
+    var subdom = [];
+    var regexMatch1 = RegExp.$1;
+    var regexMatch2 = RegExp.$2;
+    var regexMatch3 = RegExp.$3;
+    var regexMatch4 = RegExp.$4;
+    var regexMatch5 = RegExp.$5;
+    var regexMatch6 = RegExp.$6;
+    var regexMatch7 = RegExp.$7;
+    var regexMatch8 = RegExp.$8;
+    var regexMatch9 = RegExp.$9;
+    var splitUrl = regexMatch1.split(/\./);  
+    if(!regexMatch2) {
+      if (splitUrl.length > 2) {
+        for (var i = 0; i < splitUrl.length - 2; i++) {
+        subdom.push(splitUrl[i]);
+        }
+        alert("domain name: " + regexMatch7 + regexMatch8 + " subdomain: " + subdom.join("."));
       }
-      alert("Domain: " + domain[domain.length - 2] + "." + domain[domain.length - 1] + " Subdomain: " + subdom.join("."));
-    }  
-  }
+      else {
+        alert("domain name: " + regexMatch7 + regexMatch8);
+      }
+    } 
+    else {
+      if (splitUrl.length > 3) {
+        for (var i=0; i < splitUrl.length - 3; i++) {
+        subdom.push(splitUrl[i]);
+        }
+        alert("domain name: " + regexMatch3 + regexMatch4 + regexMatch5 + " subdomain: " + subdom.join("."));
+      }  
+      else {
+        alert("domain name: " + regexMatch3 + regexMatch4 + regexMatch5);  
+      }
+    }
+  }  
 }
-var url = new GetElement("url");
-function CheckUrl(event) {
-  event.preventDefault();
-  url.alertUrl();
-}
-var formId = document.getElementById("myform");
-formId.addEventListener("submit", CheckUrl, false);
+var form = new Form("myform");
