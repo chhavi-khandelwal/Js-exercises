@@ -1,19 +1,19 @@
 function CheckboxGroup(className) {
   this.noneCheckbox = document.getElementById("none");
-  this.checkboxes = document.getElementsByClassName(className);
+  this.checkboxes = document.querySelectorAll("input[type='checkbox']." + className);
 }
-CheckboxGroup.prototype.checkMax = function(dayname) {
+CheckboxGroup.prototype.checkMax = function(selectedCheckbox) {
   var count = 0;
   var maxSelectionsAllowed = 3;
   this.noneCheckbox.checked = false;
   for (var i = 0, len = this.checkboxes.length; i < len; i++) {
-    if (this.checkboxes[i].checked && !(this.checkboxes[i] == dayname)) {
+    if (this.checkboxes[i].checked && !(this.checkboxes[i] == selectedCheckbox)) {
       count++;
     }
   }
   if (count >= maxSelectionsAllowed) {
     var selectedDays = new Array();
-    dayname.checked = false;
+    selectedCheckbox.checked = false;
     for (var i = 0, len = this.checkboxes.length; i < len; i++) {
       if (this.checkboxes[i].checked) {
         selectedDays.push(this.checkboxes[i].value);
