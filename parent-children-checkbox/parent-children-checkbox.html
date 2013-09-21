@@ -8,19 +8,19 @@
     <body>
       <div id="main-container" style="height:100px; overflow:auto; border:1px solid black">
         <p class="checkboxlabel" id="colorcheck">
-          <input type="checkbox" id="color" class="parent-checkbox" value="0" onclick="colorCheckbox.openList(0);">
+          <input type="checkbox" id="color" class="parent-checkbox" value="0" onclick="colorCheckbox.openList(this);">
           <label for="color">COLOR</label>
         </p>
         <p class="checkboxlabel" id="drinkcheck">
-          <input type="checkbox" id="drinks" class="parent-checkbox" value="1" onclick="drinksCheckbox.openList(1)">
+          <input type="checkbox" id="drinks" class="parent-checkbox" value="1" onclick="drinksCheckbox.openList(this)">
           <label for="drinks">DRINKS</label>
         </p>
         <p class="checkboxlabel" id="moviecheck">
-          <input type="checkbox" id="movies" class="parent-checkbox" value="2" onclick="moviesCheckbox.openList(2)">
+          <input type="checkbox" id="movies" class="parent-checkbox" value="2" onclick="moviesCheckbox.openList(this)">
           <label for="movies">MOVIES</label>
         </p>
         <p class="checkboxlabel" id="bikecheck">
-          <input type="checkbox" id="bikes" class="parent-checkbox" value="3" onclick="bikesCheckbox.openList(3);">
+          <input type="checkbox" id="bikes" class="parent-checkbox" value="3" onclick="bikesCheckbox.openList(this);">
           <label for="bikes">BIKES</label>         
         </p>
       </div>
