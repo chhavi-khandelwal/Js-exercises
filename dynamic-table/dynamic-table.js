@@ -1,70 +1,74 @@
-function Table(tableid) {
-  this.tableid = document.getElementById("dynamictable");
+function Table(id) {
+  that = this;
+  this.tableId = document.getElementById(id);
   this.count = 0;
 }
 Table.prototype.addRow = function() {
   this.count++;
-  var row = this.tableid.insertRow(1);
+  var row = this.tableId.insertRow(1);
   row.id = this.count;
-  var cell1 = row.insertCell(0);
-  var name = document.createElement("input");
-  name.type = "textbox";
-  name.autofocus = true;
-  cell1.appendChild(name); 
-  var cell2 = row.insertCell(1);
-  var email = document.createElement("input");
-  email.type = "textbox";
-  cell2.appendChild(email); 
-  var cell3 = row.insertCell(2);
-  var button = document.createElement("input");
-  button.type = "button";
-  button.value = "save";
-  button.className = "savefield";
+  var cell = [];
+  var addRowParams = [];
+  for (var i = 0; i < 3; i++) {
+    cell[i] = row.insertCell(i); 
+  }
+  var name = this.createInputElement("name");
+  var email = this.createInputElement("email");
+  cell[0].appendChild(name); 
+  cell[1].appendChild(email); 
+  var saveButton = document.createElement("input");
+  saveButton.type = "button";
+  saveButton.value = "save";
   var counter = this.count;
-  button.id = "saveButton"[counter];
-  console.log(button.id);
-  cell3.appendChild(button);
-  button.onclick = function() {
-    name.disabled = true;
-    name.style.background = "white";
-    name.style.color = "black";
-    name.style.border = "none";
-    email.disabled = true;
-    email.style.background = "white";
-    email.style.color = "black";
-    email.style.border = "none";
-    var myrow = document.getElementById(counter);
-    var lastTableCell = myrow.lastChild;
-    var saveButton = document.getElementById("saveButton"[counter]);
-    console.log(saveButton);
-    var edit = document.createElement("a");
-    edit.href = "#";
-    var emailTextNode = document.createTextNode("edit");
-    edit.appendChild(emailTextNode);
-    edit.onclick = function() {
-      name.disabled = false;
-      name.style.border = "1px solid #ada9a5";
-      name.style.borderRadius = "3px"; 
-      email.disabled = false;
-      email.style.border = "1px solid #ada9a5";
-      email.style.borderRadius = "3px";
-      var emptyText = document.createTextNode("");
-      lastTableCell.replaceChild(saveButton, edit);
-      lastTableCell.replaceChild(emptyText, del);            
-      lastTableCell.appendChild(saveButton);
-      return false;
-    }
-    var del = document.createElement("a");
-    del.href = "#";
-    var delTextNode = document.createTextNode("/del");
-    del.appendChild(delTextNode);
-    del.onclick = function() {
-      var tablebody = document.getElementsByTagName("tbody");
-      tablebody[0].removeChild(myrow);
-      return false;
-    }
-    lastTableCell.replaceChild(edit, saveButton);
-    lastTableCell.appendChild(del);
-  }  
+  saveButton.id = "saveButton" + [counter];
+  addRowParams.push(saveButton, counter, name, email);
+  cell[2].appendChild(saveButton);
+  saveButton.onclick = function() {
+    that.buttonClick(addRowParams);
+    return false;
+  }
 }
-var lastTableCell = new Table("dynamictable");
+Table.prototype.createInputElement = function(item) {
+  item = document.createElement("input");
+  item.type = "textbox";
+  return item;
+}
+Table.prototype.createAnchorNode = function(item) {
+  var itemName = document.createElement("a");
+  itemName.href = "#";
+  itemName.appendChild(document.createTextNode(item));
+  return itemName;
+}
+Table.prototype.buttonClick = function(addRowParams) {
+  var myrow = document.getElementById(addRowParams[1]);
+  var lastTableCell = myrow.lastChild;
+  var edit = this.createAnchorNode("edit");
+  var del = this.createAnchorNode("/ del");
+  var editName = document.createTextNode(addRowParams[2].value);
+  var emailValue = document.createTextNode(addRowParams[3].value);
+  var editParams = [];
+  editParams.push(lastTableCell, del, edit, myrow, editName, emailValue);
+  myrow.firstChild.replaceChild(editParams[4], addRowParams[2]);
+  myrow.childNodes[1].replaceChild(editParams[5], addRowParams[3]);
+  lastTableCell.replaceChild(edit, addRowParams[0]);
+  lastTableCell.appendChild(del);
+  edit.onclick = function() {
+    that.editClick(addRowParams, editParams);
+    return false;
+  }
+  del.onclick = function() {
+    that.delClick(myrow);
+    return false;
+  }
+}
+Table.prototype.delClick = function(myrow) {
+  var tablebody = document.getElementsByTagName("tbody");
+  tablebody[0].removeChild(myrow);
+}
+Table.prototype.editClick = function(addRowParams, editParams) {  
+  editParams[0].replaceChild(addRowParams[0], editParams[2]);
+  editParams[0].removeChild(editParams[1]);            
+  editParams[3].firstChild.replaceChild(addRowParams[2], editParams[4]);
+  editParams[3].childNodes[1].replaceChild(addRowParams[3], editParams[5]);
+}
+var userTable = new Table("dynamictable");
