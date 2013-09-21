@@ -1,20 +1,17 @@
-function Form(id) {
-  this.root = document.getElementById(id);
+function CheckboxGroup(className) {
   this.noneCheckbox = document.getElementById("none");
-  this.checkboxes = document.querySelectorAll("#" + this.root.id + " input[type='checkbox'].days");
+  this.checkboxes = document.getElementsByClassName(className);
 }
-Form.prototype.checkMax = function(dayname) {
+CheckboxGroup.prototype.checkMax = function(dayname) {
   var count = 0;
-  var maxSelectedCheckboxes = 3;
+  var maxSelectionsAllowed = 3;
   this.noneCheckbox.checked = false;
   for (var i = 0, len = this.checkboxes.length; i < len; i++) {
-    if(!(dayname == none)) {
-      if (this.checkboxes[i].checked && !(this.checkboxes[i] == dayname)) {
-        count++;
-      }
+    if (this.checkboxes[i].checked && !(this.checkboxes[i] == dayname)) {
+      count++;
     }
   }
-  if (count >= maxSelectedCheckboxes) {
+  if (count >= maxSelectionsAllowed) {
     var selectedDays = new Array();
     dayname.checked = false;
     for (var i = 0, len = this.checkboxes.length; i < len; i++) {
@@ -25,9 +22,9 @@ Form.prototype.checkMax = function(dayname) {
     alert("Only 3 days can be selected. You have already selected " + selectedDays[0] + "," + selectedDays[1] + " and " + selectedDays[2]);
   }
 }
-Form.prototype.selectNone = function() {
+CheckboxGroup.prototype.selectNone = function() {
   for (var i = 0, len = this.checkboxes.length; i < len; i++) {
     this.checkboxes[i].checked = false;
   }
 }
-var checkObj = new Form("myform");
+var daysCheckboxes = new CheckboxGroup("days");
