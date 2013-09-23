@@ -25,62 +25,63 @@ var jsonText = JSON.parse(jsonstr);
 function TextBox(id) {
   that = this;
   this.textId = document.getElementById(id);
+  this.suggestionList = document.getElementById("listdiv");
   this.textId.addEventListener("keyup", this.autoComplete);
-  count = 0;
+  this.count = 0;
 }
 TextBox.prototype.autoComplete = function(event) {
   var enteredName;
   enteredName = that.textId.value.toLowerCase();
-  var listdiv = document.getElementById("listdiv");
   if (!that.textId.value == "" && event.keyCode != 40 && event.keyCode != 38) {
-    listdiv.innerHTML = "";
-    var newArray = [];
-    count = 0;
-    for (var i = 0; i < jsonusers.length; i++) {
-      if (jsonText[i].user.toLowerCase().indexOf(enteredName) == 0) {
-        newArray.push(jsonText[i].user);
-      }
-    }
-    for (var i = 0; i < newArray.length; i++) {
-      textNode = document.createTextNode(newArray[i]);
-      if (!that.textId.value == "") {
-        div = document.createElement("div");
-        div.className = "divnode";
-        div.appendChild(textNode);
-        listdiv.appendChild(div);
-      }
-    }
+    that.displaySuggestionList(enteredName);
   }  
-  var divnode = document.getElementsByClassName("divnode");
-  if (event.keyCode == 40 && count < divnode.length) {
-    that.textId.value = enteredName;
-    divnode[count].style.backgroundColor = "#707070";
-    that.textId.value = divnode[count].innerHTML;
-    count++;
-    for (var i = 0; i < divnode.length; i++) {
-      if (i != count - 1) 
-        divnode[i].style.backgroundColor = "white";
+  var suggestionNode = document.getElementsByClassName("suggestionNode");
+  if (event.keyCode == 40 && that.count < suggestionNode.length) {
+    that.count++;
+    that.manageSuggestionList(that.count - 1, suggestionNode);
+  }
+  if (event.keyCode == 38 && that.count > 1) {
+    --that.count;
+    if (that.count < suggestionNode.length && !(that.count < 1)) {
+      that.manageSuggestionList(that.count - 1, suggestionNode);
     }
   }
-  if (event.keyCode == 38 && count > 0) {
-    --count;
-    that.textId.value = enteredName;
-    if (count < divnode.length && !(count < 1)) {
-      divnode[count - 1].style.backgroundColor = "#707070";
-      that.textId.value = divnode[count - 1].innerHTML;
-    }
-    for (var i = 0; i < divnode.length; i++) {
-      if (i != (count - 1)) 
-        divnode[i].style.backgroundColor = "white";
-    }
+  if (event.keyCode == 8) {
+    that.count = 0;
   }
   if (that.textId.value == "" || event.keyCode == 13) {
-    if (listdiv) {
-      for (var i = 0; i < divnode.length; i++)
-        listdiv.removeChild(divnode[i]);
-      if (divnode[0])
-        listdiv.removeChild(divnode[0]);  
+    if (that.suggestionList) {
+      for (var i = 0, len = suggestionNode.length - 1; i < len; i++)
+        that.suggestionList.removeChild(suggestionNode[i]);
+      if (suggestionNode[0])
+        that.suggestionList.removeChild(suggestionNode[0]);  
     }  
   }
+}
+TextBox.prototype.manageSuggestionList = function(count, suggestionNode) {
+  suggestionNode[count].style.backgroundColor = "#707070";
+  that.textId.value = suggestionNode[count].innerHTML;
+  for (var i = 0, len = suggestionNode.length; i < len; i++) {
+      if (i != count) 
+        suggestionNode[i].style.backgroundColor = "white";
+    }
+}
+TextBox.prototype.displaySuggestionList = function(enteredName) {
+  that.suggestionList.innerHTML = "";
+  var newArray = [];
+  for (var i = 0, len = jsonusers.length; i < len; i++) {
+    if (jsonText[i].user.toLowerCase().indexOf(enteredName) == 0) {
+      newArray.push(jsonText[i].user);
+    }
+  }
+  for (var i = 0, len = newArray.length; i < len; i++) {
+    var textNode = document.createTextNode(newArray[i]);
+    if (!that.textId.value == "") {
+      var suggestion = document.createElement("div");
+      suggestion.className = "suggestionNode";
+      suggestion.appendChild(textNode);
+      that.suggestionList.appendChild(suggestion);
+    }
+  }  
 }
 var autoObj = new TextBox("textbox");
