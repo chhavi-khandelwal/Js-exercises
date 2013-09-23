@@ -1,35 +1,35 @@
-function Root(id, options) {
+function ParentCheckbox(id, childArray) {
   this.root = document.getElementById(id);
-  this.options = options;
-  this.checkedChild = this.openSubList(this.root);
+  this.childArray = childArray;
+  this.subList = this.makeSubList();
 }
-Root.prototype.openList = function() {
-  location.hash = this.root.id;
-  this.checkedChild.style.display = this.root.checked ? "block" : "none";
-  this.checkChilds();
+ParentCheckbox.prototype.openAndCheckSubList = function() {
+  this.checkChildren();
+  this.subList.style.display = this.root.checked ? "block" : "none";
+  location.hash = this.root.parentNode.id;
 }
-Root.prototype.checkChilds = function() {
-  var childCheckboxes = document.querySelectorAll("#" + this.checkedChild.id + " input[type='checkbox']");
+ParentCheckbox.prototype.checkChildren = function() {
+  var childCheckboxes = document.querySelectorAll("#" + this.subList.id + " input[type='checkbox']." + this.root.id);
   for (var i = 0, len = childCheckboxes.length; i < len; i++) {
-    childCheckboxes[i].checked = this.root.checked; 
+    childCheckboxes[i].checked = this.root.checked;
   }
 }
-Root.prototype.openSubList = function(option) {
+ParentCheckbox.prototype.makeSubList = function() {
   var mainList = document.createElement("ul");
-  mainList.id = "list" + option.value;
-  for (var j = 0; j < this.options.length; j++) {
-    var list = document.createElement("li");
-    list.style.listStyleType = "none";
+  mainList.id = "list" + this.root.value;
+  for (var j = 0, len = this.childArray.length; j < len; j++) {
+    var listItem = document.createElement("li");
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.className = this.root.id;
     var label = document.createElement("label");
-    var textNode = document.createTextNode(this.options[j]);
+    var textNode = document.createTextNode(this.childArray[j]);
     label.appendChild(textNode);
-    list.appendChild(checkbox);
-    list.appendChild(label);
-    mainList.appendChild(list);
+    listItem.appendChild(checkbox);
+    listItem.appendChild(label);
+    mainList.appendChild(listItem);  
   }
-  option.parentNode.appendChild(mainList);
+  this.root.parentNode.appendChild(mainList);
   mainList.style.display = "none";
   return mainList;
 }
@@ -37,7 +37,7 @@ var drinks = new Array("COKE", "PEPSI", "DEW");
 var movies = new Array("DAR", "SIR");
 var bikes = new Array("HAYABUSA", "PULSAR", "CBZ");
 var colors = new Array("RED", "YELLOW", "GREEN", "BLUE");
-var colorCheckbox = new Root("color", colors);
-var drinksCheckbox = new Root("drinks", drinks);
-var moviesCheckbox = new Root("movies", movies);
-var bikesCheckbox = new Root("bikes", bikes);
+var colorCheckbox = new ParentCheckbox("color", colors);
+var drinksCheckbox = new ParentCheckbox("drinks", drinks);
+var moviesCheckbox = new ParentCheckbox("movies", movies);
+var bikesCheckbox = new ParentCheckbox("bikes", bikes);
