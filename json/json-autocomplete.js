@@ -50,19 +50,23 @@ TextBox.prototype.autoComplete = function(event) {
     that.count = 0;
   }
   if (that.textId.value == "" || event.keyCode == 13) {
-    that.suggestionList.innerHTML = "";
+    while (that.suggestionList.firstChild) {
+      that.suggestionList.removeChild(that.suggestionList.firstChild);
+    }
   }
 }
 TextBox.prototype.manageSuggestionList = function(count, suggestionNode) {
   suggestionNode[count].style.backgroundColor = "#707070";
-  that.textId.value = suggestionNode[count].innerHTML;
+  that.textId.value = suggestionNode[count].textContent;
   for (var i = 0, len = suggestionNode.length; i < len; i++) {
     if (i != count) 
       suggestionNode[i].style.backgroundColor = "white";
   }
 }
 TextBox.prototype.displaySuggestionList = function(enteredName) {
-  that.suggestionList.innerHTML = "";
+  while (that.suggestionList.firstChild) {
+      that.suggestionList.removeChild(that.suggestionList.firstChild);
+  }
   var newArray = [];
   that.searchList(newArray, enteredName);
   for (var i = 0, len = newArray.length; i < len; i++) {
