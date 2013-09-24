@@ -1,0 +1,66 @@
+p {
+  font-size: 18px;
+  text-align: center;
+}
+#startmenu {
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+}
+#startmenu input[type='button'] {
+  margin-left: 200px;
+  position: relative;
+  top: 100px;
+}
+#quizpage {
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+}
+#resultpage {
+  width: 500px;
+  height: auto;
+  border: 1px solid black;
+}
+#question {
+  width: 450px;
+  height: 50px;
+  position: relative;
+  top: 50px;
+  left: 10px;
+}
+#nextbutton {
+  position: relative;
+  top: 300px;
+  text-align: right;
+  margin-right: 20px;
+}
+#timerdiv {
+  position: relative;
+  top: 300px;
+  text-align: left;
+  margin-left: 20px;
+}
+#scorediv {
+  width: 100px;
+  height: 15px;
+  position: relative;
+  top: 150px;
+  margin-left: 20px;
+}
+.answerkey {
+  display: block;
+}
+#result {
+  position: relative;
+  top: 40px;
+  left: 170px;
+}
+#questionDiv {
+  position: relative;
+  top: 40px;
+  left: 20px;
+}
+#questionDiv , #questno {
+  display: inline-block;
+}
