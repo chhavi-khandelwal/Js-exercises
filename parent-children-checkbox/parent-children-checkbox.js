@@ -1,6 +1,6 @@
-function ParentCheckbox(id, childArray) {
+function ParentCheckbox(id, childrenCheckboxList) {
   this.root = document.getElementById(id);
-  this.childArray = childArray;
+  this.childrenCheckboxList = childrenCheckboxList;
   this.subList = this.makeSubList();
 }
 ParentCheckbox.prototype.openAndCheckSubList = function() {
@@ -17,13 +17,13 @@ ParentCheckbox.prototype.checkChildren = function() {
 ParentCheckbox.prototype.makeSubList = function() {
   var mainList = document.createElement("ul");
   mainList.id = "list" + this.root.value;
-  for (var j = 0, len = this.childArray.length; j < len; j++) {
+  for (var j = 0, len = this.childrenCheckboxList.length; j < len; j++) {
     var listItem = document.createElement("li");
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = this.root.id;
     var label = document.createElement("label");
-    var textNode = document.createTextNode(this.childArray[j]);
+    var textNode = document.createTextNode(this.childrenCheckboxList[j]);
     label.appendChild(textNode);
     listItem.appendChild(checkbox);
     listItem.appendChild(label);
