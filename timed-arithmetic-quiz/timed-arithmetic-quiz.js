@@ -12,56 +12,55 @@ function Quiz(buttonId) {
   this.operators = ["+", "-", "*", "/"];
   this.questionNumber = 0;
   this.total = 0;
+  this.totalQuestions = 20;
   this.quizDiv.style.display = "none";
   this.resultDiv.style.display = "none";
   this.jsonArray = [];
   this.wrongAnsweredQuestions = [];
   this.questionText = document.createTextNode("");
   this.solution, this.timeSpan;
+  this.minRange = 1;
+  this.maxRange = 20;
   this.startButtonId.addEventListener("click", this.startQuiz, false);
-  this.nextButton.addEventListener("click", this.displayQuestion, false);
+  this.nextButton.addEventListener("click", this.newScreen, false);
 }
 Quiz.prototype.startQuiz = function() {
   that.startMenuPage.style.display = "none";
   that.quizDiv.style.display = "block";
   that.pushToJsonArray();
-  that.displayQuestion();
+  that.newScreen();
 }
 Quiz.prototype.pushToJsonArray = function() {
   var i = 0;
-  while (i < 20) {
-    var randomNumbers = [];
-    var random = that.chooseRandomNumber(randomNumbers);
-    this.jsonArray.push({"operand1": random[0], "operand2": random[1], "operator": that.operators[(random[2])], "result": that.getSolution(random)});
+  while (i < this.totalQuestions) {
+    this.operand1 = this.chooseRandomNumber(this.minRange, this.maxRange);
+    this.operand2 = this.chooseRandomNumber(this.minRange, this.maxRange);
+    this.operator = this.chooseRandomNumber(0, this.operators.length - 1);
+    this.jsonArray.push({"operand1": this.operand1, "operand2": this.operand2, "operator": this.operators[this.operator], "result": this.getSolution()});
     i++;
   }
 }
-Quiz.prototype.getSolution = function(random) {
+Quiz.prototype.getSolution = function() {
   var solution;
-  switch(random[2]) {
-    case 0: solution = random[0] + random[1];
-            break;
-    case 1: solution = random[0] - random[1];
-            break;
-    case 2: solution = random[0] * random[1];
-            break;
-    case 3: solution = Math.floor(random[0] / random[1]);
-            break;   
+  switch(this.operators[this.operator]) {
+    case "+": solution = this.operand1 + this.operand2;
+              break;
+    case "-": solution = this.operand1 - this.operand2;
+              break;
+    case "*": solution = this.operand1 * this.operand2;
+              break;
+    case "/": solution = Math.floor(this.operand1 / this.operand2);
+              break;   
   }
   return solution;
 }
-Quiz.prototype.chooseRandomNumber = function(randomNumbers) {
-  var max = 20, min = 1, maxArr = 3, minArr = 0;
-  var operand1 = Math.round(Math.random() * (max - min) + min);
-  var operand2 = Math.round(Math.random() * (max - min) + min);
-  var operator = Math.round(Math.random() * (maxArr - minArr) + minArr);
-  randomNumbers.push(operand1, operand2, operator);
-  return randomNumbers;
+Quiz.prototype.chooseRandomNumber = function(min, max) {
+  var randomNumber = Math.round(Math.random() * (max - min) + min);
+  return randomNumber;
 }
-Quiz.prototype.displayQuestion = function() {
-  var count = 0;
+Quiz.prototype.newScreen = function() {
   var answer = that.resultText.value;
-  if (that.questionNumber < 20) {
+  if (that.questionNumber < that.totalQuestions) {
     that.resultText.disabled = false;
     that.resultText.value = "";
     that.questionText.textContent = "";
@@ -70,29 +69,35 @@ Quiz.prototype.displayQuestion = function() {
     that.questionText = document.createTextNode(questionString);
     that.question.appendChild(that.questionText);
   }
-  if (!that.questionNumber == 0 && that.questionNumber <= 20) {
-    if (parseInt(answer) == that.jsonArray[that.questionNumber - 1].result) {
-      that.total++;
+  that.match(answer);
+  that.score.innerHTML = that.total; 
+  that.displayResultPage();
+  that.questionNumber++;
+}
+Quiz.prototype.match = function(answer) {
+  if (!this.questionNumber == 0 && this.questionNumber <= this.totalQuestions) {   
+    if (parseInt(answer) == this.jsonArray[this.questionNumber - 1].result) {   
+      this.total++;
     }
     else {
-      that.wrongAnsweredQuestions.push(that.jsonArray[that.questionNumber - 1]);
+      this.wrongAnsweredQuestions.push(this.questionNumber - 1);
     }
   }
-  that.score.innerHTML = that.total; 
-  if (that.questionNumber == 20) {
-    clearInterval(that.timeSpan);
-    that.quizDiv.style.display = "none";
-    that.resultDiv.style.display = "block";
-    that.displayResult();
+}
+Quiz.prototype.displayResultPage = function(answer) {
+  if (this.questionNumber == this.totalQuestions) {
+    clearInterval(this.timeSpan);
+    this.quizDiv.style.display = "none";
+    this.resultDiv.style.display = "block";
+    this.displayResult();
   }
-  that.questionNumber++;
 }
 Quiz.prototype.displayResult = function() {
   var textnode = document.createTextNode("your score: " + this.total);
   this.resultDiv.appendChild(textnode);
   var i = 0;
   while (i < this.wrongAnsweredQuestions.length) {
-    var wrongAnswer = "Question:" + (i + 1) + "   " + this.wrongAnsweredQuestions[i].operand1 + " " + this.wrongAnsweredQuestions[i].operator + " " + this.wrongAnsweredQuestions[i].operand2 + " " + "=" + this.wrongAnsweredQuestions[i].result + "\n"; 
+    var wrongAnswer = "Question:" + (i + 1) + " " + this.jsonArray[this.wrongAnsweredQuestions[i]].operand1 + " " +  (this.jsonArray[this.wrongAnsweredQuestions[i]].operator) + " " +  (this.jsonArray[this.wrongAnsweredQuestions[i]].operand2) + " " + "=" + (this.jsonArray[this.wrongAnsweredQuestions[i]].result);
     var resultTextnode = document.createTextNode(wrongAnswer);  
     var div = document.createElement("div");
     div.className = "answerkey";
@@ -106,13 +111,15 @@ Quiz.prototype.startTimer = function() {
   clearInterval(this.timeSpan);
   this.timeSpan = setInterval(elapse, 1000);
   function elapse() {
-    counter = counter - 1;
-    this.timer.innerHTML = counter;
+    if (counter > 0) {
+      counter = counter - 1;
+      that.timer.innerHTML = counter;
+    }  
     if (counter <= 0) {
-      clearInterval(this.timeSpan);
-      this.resultText.disabled = true;
+      clearInterval(that.timeSpan);
+      that.resultText.disabled = true;
       alert("TIMEOUT");
-    }
+    }      
   }
 }
-var startButton = new Quiz("start");
+var newQuiz = new Quiz("start");
