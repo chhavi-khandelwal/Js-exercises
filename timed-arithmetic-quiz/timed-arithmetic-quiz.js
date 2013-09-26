@@ -32,7 +32,7 @@ Quiz.prototype.pushToJsonArray = function() {
   while (i < 20) {
     var randomNumbers = [];
     var random = that.chooseRandomNumber(randomNumbers);
-    that.jsonArray.push({"operand1": random[0], "operand2": random[1], "operator": that.operators[(random[2])], "result": that.getSolution(random)});
+    this.jsonArray.push({"operand1": random[0], "operand2": random[1], "operator": that.operators[(random[2])], "result": that.getSolution(random)});
     i++;
   }
 }
@@ -88,29 +88,29 @@ Quiz.prototype.displayQuestion = function() {
   that.questionNumber++;
 }
 Quiz.prototype.displayResult = function() {
-  var textnode = document.createTextNode("your score: " + that.total);
-  that.resultDiv.appendChild(textnode);
+  var textnode = document.createTextNode("your score: " + this.total);
+  this.resultDiv.appendChild(textnode);
   var i = 0;
-  while (i < that.wrongAnsweredQuestions.length) {
-    var wrongAnswer = "Question:" + (i + 1) + "   " + that.wrongAnsweredQuestions[i].operand1 + " " + that.wrongAnsweredQuestions[i].operator + " " + that.wrongAnsweredQuestions[i].operand2 + " " + "=" + that.wrongAnsweredQuestions[i].result + "\n"; 
+  while (i < this.wrongAnsweredQuestions.length) {
+    var wrongAnswer = "Question:" + (i + 1) + "   " + this.wrongAnsweredQuestions[i].operand1 + " " + this.wrongAnsweredQuestions[i].operator + " " + this.wrongAnsweredQuestions[i].operand2 + " " + "=" + this.wrongAnsweredQuestions[i].result + "\n"; 
     var resultTextnode = document.createTextNode(wrongAnswer);  
     var div = document.createElement("div");
     div.className = "answerkey";
     div.appendChild(resultTextnode);
-    that.resultDiv.appendChild(div);
+    this.resultDiv.appendChild(div);
     i++;
   }
 }
 Quiz.prototype.startTimer = function() {
   var counter = 20;
-  clearInterval(that.timeSpan);
-  that.timeSpan = setInterval(elapse, 1000);
+  clearInterval(this.timeSpan);
+  this.timeSpan = setInterval(elapse, 1000);
   function elapse() {
     counter = counter - 1;
-    that.timer.innerHTML = counter;
+    this.timer.innerHTML = counter;
     if (counter <= 0) {
-      clearInterval(that.timeSpan);
-      that.resultText.disabled = true;
+      clearInterval(this.timeSpan);
+      this.resultText.disabled = true;
       alert("TIMEOUT");
     }
   }
