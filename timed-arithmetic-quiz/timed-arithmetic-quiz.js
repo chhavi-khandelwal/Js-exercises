@@ -107,7 +107,7 @@ Quiz.prototype.displayResult = function() {
   }
 }
 Quiz.prototype.startTimer = function() {
-  var counter = 20;
+  var counter = 21;
   clearInterval(this.timeSpan);
   this.timeSpan = setInterval(elapse, 1000);
   function elapse() {
