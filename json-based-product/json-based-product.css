@@ -1,0 +1,26 @@
+#mygrid {
+  display: block;
+  width: 600px;
+  height: 600px;
+  padding: 100px;
+}
+.productContainer {
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	border: 2px solid black;
+}
+.columnContainer {
+	display: inline-block;
+	height: 100px;
+	width: 600px;
+}
+.productImage {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+}
+#selectlist {
+	margin-left: 150px;
+	margin-top: 50px;
+}
