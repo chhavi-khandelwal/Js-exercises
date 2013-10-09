@@ -19,37 +19,61 @@ var productData = [{"name":"1","url":"1.jpg","color":"Yellow","brand":"BRAND A",
 {"name":"19","url":"19.jpg","color":"Green","brand":"BRAND C","sold_out":"0"},
 {"name":"20","url":"20.jpg","color":"Yellow","brand":"BRAND A","sold_out":"0"}
 ];
+
 window.addEventListener("load", initialize());
+
 function initialize() {
   var listOption = new selectList("selectlist");
   listOption.makeGrid();
 }
+
 function selectList(id) {
   var that = this;
   this.list = document.getElementById(id);
   this.body = document.getElementById("body");
+
   this.makeGrid = function() {
-    this.grid = document.createElement("div");
-    this.grid.id = "mygrid";
+    this.grid = this.createGridBlock();
     var count = 0, rows = 5, cols = 4;
     for (var i = 0; i < cols; i++) {
-      var columnContainer = document.createElement("div");
-      columnContainer.className = "columnContainer";
-      this.grid.appendChild(columnContainer);
+      var columnContainer = this.createColumnContainer();
       for (var j = 0; j < rows; j++) {
-        var productContainer = document.createElement("div");
-        productContainer.className = "productContainer";
-        columnContainer.appendChild(productContainer);
-        var productImage = document.createElement("img");
-        productImage.src = productData[count].url;
-        productImage.className = "productImage";
-        productContainer.appendChild(productImage);
+        var productContainer = this.createProductContainer(columnContainer);
+        var productImage = this.createImage(productContainer, count);
         count++;
       }
     }
     this.body.appendChild(this.grid);
     this.list.addEventListener("change", this.sortProducts.bind(that));
   }
+
+  this.createGridBlock = function() {
+    var grid = document.createElement("div");
+    grid.id = "mygrid";
+    return grid;
+  }
+
+  this.createColumnContainer = function() {
+    var columnContainer = document.createElement("div");
+    columnContainer.className = "columnContainer";
+    this.grid.appendChild(columnContainer);
+    return columnContainer;
+  }
+
+  this.createProductContainer = function(columnContainer) {
+    var productContainer = document.createElement("div");
+    productContainer.className = "productContainer";
+    columnContainer.appendChild(productContainer);
+    return productContainer;
+  }
+
+  this.createImage = function(productContainer, count) {
+    var productImage = document.createElement("img");
+    productImage.src = productData[count].url;
+    productImage.className = "productImage";
+    productContainer.appendChild(productImage);
+  }
+
   this.sortProducts = function() {
     var index = this.list.selectedIndex;
     var selectedOption = this.list.options[index];
@@ -70,6 +94,10 @@ function selectList(id) {
         return 0;
       }
     }
+    this.makeNewGrid();
+  }
+
+  this.makeNewGrid = function() {
     this.body.removeChild(this.grid);
     this.makeGrid();
   }
