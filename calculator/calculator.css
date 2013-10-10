@@ -1,0 +1,36 @@
+#calculatorContainer {
+	background-color: #c0c0c0;
+	width: 210px;
+	height: 370px;
+	border: 2px solid black;
+	text-align: center;
+}
+#displayScreen {
+  width: 200px;
+  height: 50px;
+  background-color: white;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.calculatorKeys {
+	width: 50px;
+	height: 50px;
+	vertical-align: top;
+}
+#equalTo {
+  width: 50px;
+	height: 100px;
+}
+#zero {
+  width: 100px;
+	height: 50px;
+	vertical-align: top;
+	position: relative;
+	bottom: 50px;
+	right: 25px;
+}
+#decimal {
+	position: relative;
+	bottom: 50px;
+	right: 25px;
+}
