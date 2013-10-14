@@ -21,6 +21,7 @@ var calculatorSymbols = [{"symbol":"MC", "type":"clearMemory"},
 {"symbol":"0", "type":"number"},
 {"symbol":".", "type":"number"}
 ];
+
 window.addEventListener("load", initialize());
 
 function  initialize() {
@@ -82,8 +83,7 @@ function Calculator(id) {
         that.displayScreen.value = this.value;
         that.operand1 = this.value;
         that.flag = false;
-        that.addMem = false;
-        that.subMem = false;
+        that.resetValues();
         return;
       }
     }
@@ -95,14 +95,8 @@ function Calculator(id) {
           return false;
         }
       }
-      var zeroRegex = /^[0]+$/;
-      var zeroAndDigitRegex = /^[0]+([\d]{1})$/;
       that.displayScreen.value += this.value;
-      if(zeroRegex.test(that.displayScreen.value))
-        that.displayScreen.value = "0";
-      else if (zeroAndDigitRegex.test(that.displayScreen.value))
-        that.displayScreen.value = RegExp.$1;
-      that.operand1 = that.displayScreen.value;
+      that.removeZerosFromHead();
     }
 
     if (this.name == "clearAll") { // clears the screen
@@ -123,8 +117,7 @@ function Calculator(id) {
       }
       that.operator = this.value;
       that.count = 0;
-      that.addMem = false;
-      that.subMem = false;
+      that.resetValues();
     }
 
 
@@ -141,16 +134,7 @@ function Calculator(id) {
     }
 
     if (this.name == "equalto") { // calculates expression
-      if (!(that.operand1 == undefined) && !(that.operator == undefined) && !(that.operand2 == undefined)) {
-        that.decimalTracker = 0;
-        if(that.operand2 == ".") {
-          that.operand2 = 0;
-        }
-        that.calculateExpression();
-        that.operator = undefined;
-        that.flag = false;
-        that.count = 1;
-      }
+      that.equalToOperation();
     }
 
     if (this.name == "number" && that.count == 1) { // changes value of result to operand1 when = is pressed
@@ -165,19 +149,13 @@ function Calculator(id) {
     
     if (this.name == "negativePositive") {    // changes the sign of an operand
       that.displayScreen.value = -(that.displayScreen.value);
-      if (that.operand2 == undefined && that.operand1) {
-        that.operand1 = -(that.operand1);
-      }
-      if (that.operand2) {
-        that.operand2 = -(that.operand2);
-      }
+      that.changeOperandSign();
     }
 
     if (this.name == "clearMemory") { // clears memory
       that.decimalTracker = 0;
       that.storedOperand = 0;
-      that.addMem = false;
-      that.subMem = false;
+      that.resetValues();
     }
 
     if (this.name == "deductFromMemory") {  // subtracts from memory value
@@ -189,14 +167,54 @@ function Calculator(id) {
     }
 
     if (this.name == "readMemory") {  //displays memory value on screen
-      that.displayScreen.value = that.storedOperand; 
-      that.operand1 = that.storedOperand;
-      that.flag = true;
-      that.operand2 = undefined;
-      that.operator = undefined; 
-      that.count = 0;
+      that.readFromMemory();
     }
+  }
 
+  this.equalToOperation = function() {
+    if (!(this.operand1 == undefined) && !(this.operator == undefined) && !(this.operand2 == undefined)) {
+      this.decimalTracker = 0;
+      if(this.operand2 == ".") {
+        this.operand2 = 0;
+      }
+      this.calculateExpression();
+      this.operator = undefined;
+      this.flag = false;
+      this.count = 1;
+    }
+  }
+
+  this.removeZerosFromHead = function() {
+    var zeroRegex = /^[0]+$/;
+    var zeroAndDigitRegex = /^[0]+([\d]{1})$/;
+    if(zeroRegex.test(this.displayScreen.value))
+      this.displayScreen.value = "0";
+    else if (zeroAndDigitRegex.test(this.displayScreen.value))
+      this.displayScreen.value = RegExp.$1;
+    this.operand1 = this.displayScreen.value;
+  }
+  
+  this.readFromMemory = function() {
+    this.displayScreen.value = this.storedOperand; 
+    this.operand1 = this.storedOperand;
+    this.flag = true;
+    this.operand2 = undefined;
+    this.operator = undefined; 
+    this.count = 0;
+  }
+
+  this.changeOperandSign = function() {
+    if (this.operand2 == undefined && this.operand1) {
+        this.operand1 = -(this.operand1);
+      }
+      if (this.operand2) {
+        this.operand2 = -(this.operand2);
+    }
+  }
+
+  this.resetValues = function() {
+    that.addMem = false;
+    that.subMem = false;
   }
 
   this.memoryStatus = function(operatorSymbol) {
