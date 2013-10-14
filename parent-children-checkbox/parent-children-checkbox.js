@@ -1,3 +1,18 @@
+window.onload = function() {
+  initialize();
+}
+
+function initialize() {
+  var drinks = new Array("COKE", "PEPSI", "DEW");
+  var movies = new Array("DAR", "SIR");
+  var bikes = new Array("HAYABUSA", "PULSAR", "CBZ");
+  var colors = new Array("RED", "YELLOW", "GREEN", "BLUE");
+  colorCheckbox = new ParentCheckbox("color", colors);
+  drinksCheckbox = new ParentCheckbox("drinks", drinks);
+  moviesCheckbox = new ParentCheckbox("movies", movies);
+  bikesCheckbox = new ParentCheckbox("bikes", bikes);
+}
+
 function ParentCheckbox(id, childrenCheckboxList) {
   this.root = document.getElementById(id);
   this.childrenCheckboxList = childrenCheckboxList;
@@ -6,7 +21,7 @@ function ParentCheckbox(id, childrenCheckboxList) {
 ParentCheckbox.prototype.openAndCheckSubList = function() {
   this.checkChildren();
   this.subList.style.display = this.root.checked ? "block" : "none";
-  location.hash = this.root.parentNode.id;
+  this.root.parentNode.scrollIntoView();
 }
 ParentCheckbox.prototype.checkChildren = function() {
   var childCheckboxes = document.querySelectorAll("#" + this.subList.id + " input[type='checkbox']." + this.root.id);
@@ -33,11 +48,4 @@ ParentCheckbox.prototype.makeSubList = function() {
   mainList.style.display = "none";
   return mainList;
 }
-var drinks = new Array("COKE", "PEPSI", "DEW");
-var movies = new Array("DAR", "SIR");
-var bikes = new Array("HAYABUSA", "PULSAR", "CBZ");
-var colors = new Array("RED", "YELLOW", "GREEN", "BLUE");
-var colorCheckbox = new ParentCheckbox("color", colors);
-var drinksCheckbox = new ParentCheckbox("drinks", drinks);
-var moviesCheckbox = new ParentCheckbox("movies", movies);
-var bikesCheckbox = new ParentCheckbox("bikes", bikes);
+
