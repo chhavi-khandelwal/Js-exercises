@@ -24,7 +24,7 @@ window.addEventListener("load", initialize());
 
 function initialize() {
   var listOption = new selectList("selectlist");
-  listOption.makeGrid();
+  listOption.makeGrid(productData);
 }
 
 function selectList(id) {
@@ -32,14 +32,14 @@ function selectList(id) {
   this.list = document.getElementById(id);
   this.body = document.getElementById("body");
 
-  this.makeGrid = function() {
+  this.makeGrid = function(products) {
     this.grid = this.createGridBlock();
     var count = 0, rows = 5, cols = 4;
-    for (var i = 0; i < cols; i++) {
+    for (var i = 0; i < rows; i++) {
       var columnContainer = this.createColumnContainer();
-      for (var j = 0; j < rows; j++) {
+      for (var j = 0; j < cols; j++) {
         var productContainer = this.createProductContainer(columnContainer);
-        var productImage = this.createImage(productContainer, count);
+        var productImage = this.createImage(productContainer, count, products);
         count++;
       }
     }
@@ -67,9 +67,9 @@ function selectList(id) {
     return productContainer;
   }
 
-  this.createImage = function(productContainer, count) {
+  this.createImage = function(productContainer, count, products) {
     var productImage = document.createElement("img");
-    productImage.src = productData[count].url;
+    productImage.src = products[count].url;
     productImage.className = "productImage";
     productContainer.appendChild(productImage);
   }
@@ -78,7 +78,8 @@ function selectList(id) {
     var index = this.list.selectedIndex;
     var selectedOption = this.list.options[index];
     var selectedValue = selectedOption.value;
-    productData.sort(compare);
+    var myProducts = productData;
+    myProducts.sort(compare);
     function compare(val1, val2) {
       if (selectedOption.value == "name") {
         var value1 = parseInt(val1[selectedValue], 10), value2 = parseInt(val2[selectedValue], 10);
@@ -94,11 +95,11 @@ function selectList(id) {
         return 0;
       }
     }
-    this.makeNewGrid();
+    this.makeNewGrid(myProducts);
   }
 
-  this.makeNewGrid = function() {
+  this.makeNewGrid = function(myProducts) {
     this.body.removeChild(this.grid);
-    this.makeGrid();
+    this.makeGrid(myProducts);
   }
 }
