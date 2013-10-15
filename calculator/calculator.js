@@ -30,13 +30,12 @@ function  initialize() {
 }
 
 function Calculator(id) {
-  var that = this;
   this.calculatorElement = document.getElementById(id);
-  this.count = 0; // keeps check on existence of operand1 and operator before operand2
-  this.flag = false; //keeps track on existence of operand1 before operator
-  this.storedOperand = 0; // stores operand in memory
+  this.operatorFlag = false;                 // keeps check on existence of operand1 and operator before operand2
+  this.operandOneFlag = false;              //keeps track on existence of operand1 before operator
+  this.storedOperand = 0;                    // stores operand in memory
   this.addMem = false, this.subMem = false; // toggle values if M+ and M- is pressed respectively
-  this.decimalTracker = 0; // tracks the no. of c\decimal points in an operand
+  this.decimalTracker = 0;                   // tracks the no. of c\decimal points in an operand
 
   this.displayCalculator = function() {
   	this.displayScreen = this.createDisplayScreen();
@@ -52,7 +51,7 @@ function Calculator(id) {
         calculatorButton.id = "decimal";
       }
   	  this.calculatorElement.appendChild(calculatorButton);
-  	  calculatorButton.addEventListener("click", this.displayScreenOnScreen);
+  	  calculatorButton.addEventListener("click", this.keyClickHandler.bind(this));
   	}
   }
 
@@ -76,152 +75,122 @@ function Calculator(id) {
     return displayScreen;
   }
   
-  this.displayScreenOnScreen = function() {
+  this.keyClickHandler = function(event) {
+    var keyValue = event.target.value;
+    switch(event.target.name) {
+      case "number": this.displayOperand(keyValue);
+      break;
+      case "operator":  if (!(this.operand1 == undefined)) {
+                          this.insertOperatorInExpression(keyValue); 
+                        }
+      break;
+      case "equalto": if (!(this.operand1 == undefined) && !(this.operator == undefined) && !(this.operand2 == undefined)) {
+                        this.equalToOperation();
+                      }
+      break;
+      case "clearAll": this.clearAllExpression();
+      break;
+      case "negativePositive": this.displayChangedSignOperator();
+      break;
+      case "clearMemory": this.clearFromMemory();
+      break;
+      case "readMemory": this.readFromMemory();  
+      break;
+      case "deductFromMemory": this.memoryStatus("-");
+      break;
+      case "addToMemory": this.memoryStatus("+");
+      break;
+    }
+  }
 
-    if (this.name == "number" && that.flag == true && that.count == 0) { //displays no. from memory
-      if (that.addMem || that.subMem) {
-        that.displayScreen.value = this.value;
-        that.operand1 = this.value;
-        that.flag = false;
-        that.resetValues();
-        return;
+  this.setScreenValue = function(value) {
+    this.displayScreen.value = value;
+  }
+
+  this.clearAllExpression = function() {
+    this.setScreenValue("");
+    this.operand1 = 0;
+    this.operandOneFlag = false;
+    this.decimalTracker = 0;
+  }
+
+  this.insertOperatorInExpression = function(keyValue) {
+    this.operandOneFlag = true;
+    this.decimalTracker = 0;
+    if(!(this.operand2 == undefined)) {
+      this.calculateExpression();
+    }
+    if(this.operand1 == ".") {
+      this.operand1 = 0;
+    }
+    this.operator = keyValue;
+    this.operatorFlag = false;
+    this.resetValues();
+  }
+
+  this.clearFromMemory = function() {
+    this.decimalTracker = 0; 
+    this.storedOperand = 0;
+    this.resetValues();
+  }
+
+  this.displayOperand = function(keyValue) {
+    if (!this.operandOneFlag && !this.operatorFlag) {    // displays operand1 on screen
+      this.getFirstOperand(keyValue);
+    }
+    else if (this.operandOneFlag) {       
+      if (this.operatorFlag == false) {  //replaces screen value by operand1 if number is pressed after saving to memory and operator is undefined
+        if (this.addMem || this.subMem) {
+          this.getNewFirstOperand(keyValue);
+          return;
+        }
+      }
+      this.getSecondOperand(keyValue);          // displays operand2 on screen
+    }
+    else if (this.operatorFlag) {               // changes value of result to operand1 when = is pressed
+      this.changeResultToFirstOperand(keyValue);
+    }
+  }
+
+  this.getNewFirstOperand = function(keyValue) {
+    this.setScreenValue(keyValue);
+    this.operand1 = keyValue;
+    this.operandOneFlag = false;
+    this.resetValues();
+  }
+
+  this.changeResultToFirstOperand = function(keyValue) {
+    if (keyValue == ".") {
+      this.trackDecimal();
+    }
+    this.setScreenValue(keyValue);
+    this.operand1 = keyValue;
+    this.operatorFlag = false;  
+  }
+
+  this.getFirstOperand = function(keyValue) {
+    if (keyValue == ".") {
+      if(!this.trackDecimal()) {
+        return false;
       }
     }
+    this.appendToScreenValue(keyValue);
+    this.removeZerosFromHead();
+  }
 
-    if (this.name == "number" && that.flag == false && that.count == 0) { // displays operand1 on screen
-      if (this.value == ".") {
-        that.decimalTracker++;
-        if (that.decimalTracker > 1) {
+  this.getSecondOperand = function(keyValue) {
+    if (this.operand2 == undefined) {
+      this.setScreenValue("");
+    }
+    if (this.operator) {
+      if (keyValue == ".") {
+        if(!this.trackDecimal()) {
           return false;
         }
       }
-      that.displayScreen.value += this.value;
-      that.removeZerosFromHead();
+      this.appendToScreenValue(keyValue);
+      this.operand2 =  this.displayScreen.value;
     }
-
-    if (this.name == "clearAll") { // clears the screen
-      that.displayScreen.value = "";
-      that.operand1 = 0;
-      that.flag = false;
-      that.decimalTracker = 0;
-    }
-
-    if (this.name == "operator" && !(that.operand1 == undefined)) { // displays operator on screen
-      that.flag = true;
-      that.decimalTracker = 0;
-      if(!(that.operand2 == undefined)) {
-        that.calculateExpression();
-      }
-      if(that.operand1 == ".") {
-        that.operand1 = 0;
-      }
-      that.operator = this.value;
-      that.count = 0;
-      that.resetValues();
-    }
-
-
-    if (this.name == "number" && that.flag == true && that.operand2 == undefined) {
-      that.displayScreen.value = "";
-    }
-
-    if (this.name == "number" && that.flag == true && that.operator) { // displays operand2 on screen
-      if (this.value == ".") {
-        that.trackDecimal();
-      }
-      that.displayScreen.value += this.value;
-      that.operand2 =  that.displayScreen.value;
-    }
-
-    if (this.name == "equalto") { // calculates expression
-      that.equalToOperation();
-    }
-
-    if (this.name == "number" && that.count == 1) { // changes value of result to operand1 when = is pressed
-      if (this.value == ".") {
-        that.trackDecimal();
-        }
-      that.displayScreen.value = "";
-      that.displayScreen.value = this.value;
-      that.operand1 = this.value;
-      that.count = 0;
-    }
-    
-    if (this.name == "negativePositive") {    // changes the sign of an operand
-      that.displayScreen.value = -(that.displayScreen.value);
-      that.changeOperandSign();
-    }
-
-    if (this.name == "clearMemory") { // clears memory
-      that.decimalTracker = 0;
-      that.storedOperand = 0;
-      that.resetValues();
-    }
-
-    if (this.name == "deductFromMemory") {  // subtracts from memory value
-      that.memoryStatus("-");
-    }
-
-    if (this.name == "addToMemory") { // adds to memory value
-      that.memoryStatus("+");
-    }
-
-    if (this.name == "readMemory") {  //displays memory value on screen
-      that.readFromMemory();
-    }
-  }
-
-  this.equalToOperation = function() {
-    if (!(this.operand1 == undefined) && !(this.operator == undefined) && !(this.operand2 == undefined)) {
-      this.decimalTracker = 0;
-      if(this.operand2 == ".") {
-        this.operand2 = 0;
-      }
-      this.calculateExpression();
-      this.operator = undefined;
-      this.flag = false;
-      this.count = 1;
-    }
-  }
-
-  this.removeZerosFromHead = function() {
-    var zeroRegex = /^[0]+$/;
-    var zeroAndDigitRegex = /^[0]+([\d]{1})$/;
-    if(zeroRegex.test(this.displayScreen.value))
-      this.displayScreen.value = "0";
-    else if (zeroAndDigitRegex.test(this.displayScreen.value))
-      this.displayScreen.value = RegExp.$1;
-    this.operand1 = this.displayScreen.value;
-  }
-  
-  this.readFromMemory = function() {
-    this.displayScreen.value = this.storedOperand; 
-    this.operand1 = this.storedOperand;
-    this.flag = true;
-    this.operand2 = undefined;
-    this.operator = undefined; 
-    this.count = 0;
-  }
-
-  this.changeOperandSign = function() {
-    if (this.operand2 == undefined && this.operand1) {
-        this.operand1 = -(this.operand1);
-      }
-      if (this.operand2) {
-        this.operand2 = -(this.operand2);
-    }
-  }
-
-  this.resetValues = function() {
-    that.addMem = false;
-    that.subMem = false;
-  }
-
-  this.memoryStatus = function(operatorSymbol) {
-    this.addMem = true;
-    this.storedOperand = this.storeMemory(operatorSymbol);
-    this.count = 0;
-    this.flag = true;
   }
 
   this.trackDecimal = function() {
@@ -229,17 +198,82 @@ function Calculator(id) {
     if (this.decimalTracker > 1) {
       return false;
     }
+    else {
+      return true;
+    }
+  }
+
+  this.appendToScreenValue = function(value) {
+    this.displayScreen.value += value;
+  }
+
+  this.equalToOperation = function() {
+      this.decimalTracker = 0;
+      if(this.operand2 == ".") {
+        this.operand2 = 0;
+      }
+      this.calculateExpression();
+      this.operator = undefined;
+      this.operandOneFlag = false;
+      this.operatorFlag = true;
+  }
+
+  this.removeZerosFromHead = function() {
+    var zeroRegex = /^[0]+$/;
+    var zeroAndDigitRegex = /^[0]+([\d]{1})$/;
+    if(zeroRegex.test(this.displayScreen.value)) {
+      this.setScreenValue("0");
+    }  
+    else if (zeroAndDigitRegex.test(this.displayScreen.value)) {
+      this.setScreenValue(RegExp.$1);
+    }  
+    this.operand1 = this.displayScreen.value;
+  }
+  
+  this.readFromMemory = function() {
+    this.setScreenValue(this.storedOperand);
+    this.operand1 = this.storedOperand;
+    this.operandOneFlag = true;
+    this.operand2 = undefined;
+    this.operator = undefined; 
+    this.operatorFlag = false;
+  }
+
+  this.changeOperandSign = function() {
+    if (this.operand2 == undefined && this.operand1) {
+      this.operand1 = -(this.operand1);
+    }
+    if (this.operand2) {
+      this.operand2 = -(this.operand2);
+    }
+  }
+
+  this.displayChangedSignOperator =  function() {
+    this.setScreenValue(-(this.displayScreen.value));
+    this.changeOperandSign();
+  }
+
+  this.resetValues = function() {
+    this.addMem = false;
+    this.subMem = false;
+  }
+
+  this.memoryStatus = function(operatorSymbol) {
+    this.addMem = true;
+    this.storedOperand = this.storeMemory(operatorSymbol);
+    this.operatorFlag = false;
+    this.operandOneFlag = true;
   }
 
   this.storeMemory = function(memOperator) {
     this.storedOperand = eval(this.storedOperand + memOperator + "(" + this.displayScreen.value + ")" );
     return this.storedOperand;
   }
-  
+
   this.calculateExpression = function() {
     var solution = eval(this.operand1 + this.operator + this.operand2);
-    this.displayScreen.value = solution;
+    this.setScreenValue(solution);
     this.operand1 = solution;
     this.operand2 = undefined;
-  }  
+  } 
 }
