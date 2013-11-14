@@ -4,30 +4,34 @@
     <title>
       TIMED ARITHMETIC QUIZ
     </title>
+    <script defer type="text/javascript" src="timed-arithmetic-quiz.js"></script>
   </head>
-  <body>
+  <body id="quiz">
+    <div id="start-page">
+      <div class="heading">
+        ARITHMETIC QUIZ
+      </div>
+      <div class="instruction">
+        <div id="instruction">
+          INSTRUCTIONS
+        </div>
+        <div>
+          1. quiz consists of 20 questions
+        </div>
+        <div>
+          2. enter as answer the round off value in case of / operator
+        </div>    
+        <div>
+          3. 1 point for each correct answer
+        </div>
+        <div>
+          4. no negative marking
+        </div>
+      </div>
+      <input type="button" id="start-button" value="START QUIZ">  
+    </div>
+    <div id="quiz-question-page">
+    </div>  
     <link rel="stylesheet" type="text/css" href="timed-arithmetic-quiz.css">
-    <div id="startmenu">
-      <p>ARITHMETIC-QUIZ</p> 
-      <input type="button" id="start" value="Start">
-    </div>
-    <div id="quizpage">
-      <div id="question">
-      </div>
-      <input type="textbox" id="result">
-      <div id= "scorediv">Score:
-        <label for="score" id="score"></label>
-      </div>
-      <div id="nextbutton">
-        <input type="button" id="next" value="Next">
-      </div>
-      <div id="timerdiv">
-        <label for="text">Time Left(in secs): </label>
-        <label for="timer" id="timer"></label>
-      </div>
-    </div>
-    <div id="resultpage">
-    </div>
-    <script type="text/javascript" src="timed-arithmetic-quiz.js"></script>
   </body>
 </html>  
